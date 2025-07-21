@@ -14,7 +14,8 @@ RowLayout {
 
 	IconImage {
 		implicitSize: 24
-		source: Qt.resolvedUrl("resources/nixOsLogo.svg")
+		sourcePath: "resources/nixOsLogo.svg"
+		color: Config.palette.fg2
 	}
 
 	Item {
@@ -25,7 +26,7 @@ RowLayout {
 			spacing: 0
 			Text {
 				font.pointSize: 8
-				color: Config.palette.fg2
+				color: Config.palette.fg3
 				text: {
 					const activeWindow = ToplevelManager.activeToplevel; // idk why the hyprland appId is null
 					if (activeWindow?.activated) {

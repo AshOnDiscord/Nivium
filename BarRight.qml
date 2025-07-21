@@ -16,7 +16,7 @@ RowLayout {
 		radius: 1000
 		IconImage {
 			implicitSize: 18
-			source: Qt.resolvedUrl("resources/power.svg")
+			sourcePath: "resources/power.svg"
 		}
 
 		HoverHandler {
@@ -59,7 +59,8 @@ RowLayout {
 			IconImage {
 				Layout.alignment: Qt.AlignVCenter
 				implicitSize: 18
-				source: Qt.resolvedUrl("resources/calendarClock.svg")
+				sourcePath: "resources/calendarClock.svg"
+				color: Config.palette.fg2
 			}
 			RowLayout {
 				Layout.alignment: Qt.AlignVCenter
@@ -70,7 +71,7 @@ RowLayout {
 				}
 				Text {
 					font.family: Config.font.monoFamily
-					color: Config.palette.fg1
+					color: Config.palette.fg2
 					text: ":"
 				}
 				Text {
@@ -79,7 +80,7 @@ RowLayout {
 				}
 				Text {
 					font.family: Config.font.monoFamily
-					color: Config.palette.fg1
+					color: Config.palette.fg2
 					text: ":"
 				}
 				Text {
@@ -94,7 +95,7 @@ RowLayout {
 					font.family: Config.font.monoFamily
 					font.pointSize: 10
 					text: clockWrapper.time.ap
-					color: Config.palette.fg2
+					color: Config.palette.fg3
 				}
 			}
 		}

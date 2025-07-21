@@ -4,11 +4,14 @@ import { watch } from "fs";
 const screenName = (await $`brightnessctl -m`.quiet().text()).split(",")[0];
 const screenDir = `/sys/class/backlight/${screenName}/`;
 
+const brightnessFile = Bun.file(`${screenDir}brightness`);
+const brightnessMaxFile = Bun.file(`${screenDir}max_brightness`);
+
 const getBrightnessRaw = async () => {
-  return +(await $`cat ${screenDir}brightness`.quiet().text());
+  return +(await brightnessFile.text());
 };
 const getBrightnessMax = async () => {
-  return +(await $`cat ${screenDir}max_brightness`.quiet().text());
+  return +(await brightnessMaxFile.text());
 };
 
 let brightnessRaw = await getBrightnessRaw();

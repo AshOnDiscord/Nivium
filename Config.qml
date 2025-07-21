@@ -18,7 +18,10 @@ Singleton {
 		property color bg3: "#121D3D"
 		property color bg4: "#172653"
 		property color fg0: "#FFFFFF"
-		property color fg1: "#86A2E3"
-		property color fg2: "#3C5AB2"
+		property color fg1: "#BFD0E5"
+		property color fg2: "#86A2E3"
+		property color fg3: "#3C5AB2"
+
+		property color red: "#DB677C"
 	}
 }

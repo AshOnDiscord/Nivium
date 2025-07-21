@@ -2,9 +2,15 @@ import { $ } from "bun";
 
 const batteryDir = "/sys/class/power_supply/BAT1/";
 const chargerDir = "/sys/class/power_supply/ACAD/";
+
+const chargeFile = Bun.file(`${batteryDir}charge_now`);
+const capacityFile = Bun.file(`${batteryDir}charge_full`);
+const lowThresholdFile = Bun.file(`${batteryDir}alarm`);
+const chargingFile = Bun.file(`${chargerDir}online`);
+
 const battery = {
   charge: 0,
-  capacity: 0,
+  capacity: 1,
   icon: "battery4",
   lowThreshold: Infinity,
   low: false,
@@ -13,7 +19,28 @@ const battery = {
   charging: false,
 };
 
+const updateIcon = () => {
+  const charge = battery.charge / battery.capacity;
+
+  if (battery.charging) {
+    battery.icon = "battery_charging";
+  } else if (charge > 0.8) {
+    battery.icon = "battery4";
+  } else if (charge > 0.6) {
+    battery.icon = "battery3";
+  } else if (charge > 0.4) {
+    battery.icon = "battery2";
+  } else if (charge > 0.2) {
+    battery.icon = "battery1";
+  } else if (!battery.low) {
+    battery.icon = "battery0";
+  } else {
+    battery.icon = "battery_low";
+  }
+};
+
 const updateOutput = () => {
+  updateIcon();
   console.log(JSON.stringify(battery));
 };
 
@@ -22,21 +49,21 @@ const updateLow = () => {
 };
 
 const updateCharge = async () => {
-  battery.charge = +(await $`cat ${batteryDir}charge_now`.quiet().text());
+  battery.charge = +(await chargeFile.text());
   updateLow();
 };
 
 const updateCapacity = async () => {
-  battery.capacity = +(await $`cat ${batteryDir}charge_full`.quiet().text());
+  battery.capacity = +(await capacityFile.text());
 };
 
 const updateLowThreshold = async () => {
-  battery.lowThreshold = +(await $`cat ${batteryDir}alarm`.quiet().text());
+  battery.lowThreshold = +(await lowThresholdFile.text());
   updateLow();
 };
 
 const updateCharging = async () => {
-  battery.charging = +(await $`cat ${chargerDir}online`.quiet().text()) == 1;
+  battery.charging = +(await chargingFile.text()) == 1;
 };
 
 await Promise.all([

@@ -13,7 +13,7 @@ Singleton {
 	property bool charging: false
 
 	Process {
-		command: ["bun", `${Quickshell.env("HOME")}/.config/quickshell/services/scripts/Battery.ts`]
+		command: ["bun", "--hot", `${Quickshell.env("HOME")}/.config/quickshell/services/scripts/Battery.ts`]
 		running: true
 
 		stdout: SplitParser {

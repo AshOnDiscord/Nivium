@@ -22,8 +22,8 @@ WrapperRectangle {
 					if (modelData.active)
 						return Config.palette.fg0;
 					if (modelData.exists !== false)
-						return Config.palette.fg1;
-					return Config.palette.fg2;
+						return Config.palette.fg2;
+					return Config.palette.fg3;
 				}
 				radius: 12
 

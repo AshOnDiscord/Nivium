@@ -3,15 +3,16 @@ import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Effects
 
 import qs.primitives
 
 IconImage {
-	required property string sourcePath
-	property string hoverText: ""
+	required property string hoverText
+	sourcePath: "resources/nixOsLogo.svg"
 
 	implicitSize: 18
-	source: Qt.resolvedUrl(sourcePath)
+	color: Config.palette.fg2
 
 	ToolTip {
 		id: toolTip
@@ -21,13 +22,14 @@ IconImage {
 		contentItem: WrapperRectangle {
 			color: "transparent"
 			topMargin: 4
+
 			WrapperRectangle {
 				color: Config.palette.bg4
 				radius: 1000
-				topMargin: 4
-				bottomMargin: 4
-				leftMargin: 6
-				rightMargin: 6
+				topMargin: 6
+				bottomMargin: 6
+				leftMargin: 8
+				rightMargin: 8
 
 				Text {
 					text: toolTip.text

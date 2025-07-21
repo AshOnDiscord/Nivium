@@ -28,12 +28,19 @@ WrapperRectangle {
 			hoverText: "Volume"
 		}
 		StatusAreaIcon {
-			sourcePath: "resources/brightnessHigh.svg"
+			sourcePath: Brightness.screen > 50 ? "resources/brightnessHigh.svg" : "resources/brightnessLow.svg"
 			hoverText: `${Brightness.screen}%`
 		}
 		StatusAreaIcon {
 			sourcePath: `${Battery.icon}`
 			hoverText: `${Battery.percentage}% - ${Battery.charging ? "Charging" : "Not Charging"}`
+			color: {
+				if (Battery.charging)
+					return Config.palette.fg1;
+				if (Battery.low)
+					return Config.palette.red;
+				return Config.palette.fg2;
+			}
 		}
 	}
 }
