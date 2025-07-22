@@ -86,7 +86,7 @@ const updateCharger = async () => {
 
 const decoder = new TextDecoder();
 const proc = Bun.spawn({
-  cmd: ["udevadm", "monitor", "--kernel", "--subsystem-match=power_supply"],
+  cmd: ["upower", "-m"],
   stdout: "pipe",
   stderr: "pipe",
 });
