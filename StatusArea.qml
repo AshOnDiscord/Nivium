@@ -1,5 +1,6 @@
 import Quickshell
 import Quickshell.Widgets
+import Quickshell.Services.Pipewire
 import QtQuick
 import QtQuick.Layouts
 
@@ -24,8 +25,22 @@ WrapperRectangle {
 			hoverText: "Bluetooth"
 		}
 		StatusAreaIcon {
-			sourcePath: "resources/volume2.svg"
-			hoverText: "Volume"
+			sourcePath: {
+				const sink = Pipewire.defaultAudioSink;
+				if (sink.audio.muted) return "resources/volumeOff.svg"
+				const volume = +(sink.audio.volume * 100).toFixed(1)
+				if (volume >= 50) return "resources/volume3.svg"
+				if (volume >= 25) return "resources/volume2.svg"
+				if (volume > 0) return "resources/volume1.svg"
+				return "resources/volume0.svg"
+			}
+			hoverText: {
+				const sink = Pipewire.defaultAudioSink;
+				return `${sink.description} - ${(sink.audio.volume * 100).toFixed(1)}% (${sink.audio.muted ? "Muted" : "Unmuted"})`;
+			}
+		}
+		PwObjectTracker {
+			objects: [Pipewire.defaultAudioSink, Pipewire.defaultAudioSource]
 		}
 		StatusAreaIcon {
 			sourcePath: Brightness.screen > 50 ? "resources/brightnessHigh.svg" : "resources/brightnessLow.svg"

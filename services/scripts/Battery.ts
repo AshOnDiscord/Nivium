@@ -102,7 +102,7 @@ for await (const chunk of proc.stdout) {
   for (const line of lines) {
     if (line.includes("ACAD")) {
       updateCharger();
-    } else if (line.includes("BAT1")) {
+    } else if (line.includes("BAT0") || line.includes("BAT1")) {
       updateBattery();
     }
   }

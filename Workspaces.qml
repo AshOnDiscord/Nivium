@@ -41,8 +41,9 @@ WrapperRectangle {
 	}
 
 	function getWorkspaces() {
-		const minId = Hyprland.workspaces.values.reduce((min, ws) => Math.min(min, ws.id), 1);
+		const minId = Math.max(Hyprland.workspaces.values.reduce((min, ws) => Math.min(min, ws.id), 1),1)
 		const maxId = Hyprland.workspaces.values.reduce((max, ws) => Math.max(max, ws.id), 5);
+		console.log(Hyprland.workspaces.values.map(ws => ws.id));
 		const workspaces = [];
 		const exisiting = Hyprland.workspaces.values;
 		for (let i = minId; i <= maxId; i++) {
