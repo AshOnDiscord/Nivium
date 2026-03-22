@@ -1,11 +1,13 @@
 import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.Pipewire
+import Quickshell.Networking
 import QtQuick
 import QtQuick.Layouts
 
 import qs.services
 import qs.primitives
+
 
 WrapperRectangle {
 	color: Config.palette.bg2
@@ -15,15 +17,45 @@ WrapperRectangle {
 	rightMargin: 6
 	radius: 1000
 
+	function getPrimaryNetwork() {
+		const networks = Networking.devices.values
+		if (networks.length === 0) return null;
+
+		const connected = networks.find(n => n.connected);
+		if (connected) return connected;
+
+		const ethernet = networks.find(n => n.name.startsWith("enp") || n.name.startsWith("eth"));
+		if (ethernet) return ethernet;
+
+		const wifi = networks.find(n => n.name.startsWith("wlp") || n.name.startsWith("wlan"));
+		if (wifi) return wifi;
+
+		return networks[0];
+	}
+
 	RowLayout {
 		StatusAreaIcon {
-			sourcePath: "resources/wifi4.svg"
-			hoverText: "Wifi"
+			sourcePath: {
+				const network = getPrimaryNetwork();
+				console.log(`nc ${network?.connected}`)
+				if (network?.connected) return "resources/wifi4.svg"
+				return "resources/wifiOff.svg"
+			}
+			hoverText: {
+				const network = getPrimaryNetwork();
+				if (!network) return "No Network";
+				const networks = network.networks.values;
+				const connected = networks.find(n => n.connected);
+
+				return `${network.name} - ${connected?.name || "Not Connected"}`;
+			}
 		}
+		
 		StatusAreaIcon {
 			sourcePath: "resources/bluetoothConnected.svg"
 			hoverText: "Bluetooth"
 		}
+
 		StatusAreaIcon {
 			sourcePath: {
 				const sink = Pipewire.defaultAudioSink;
@@ -42,10 +74,12 @@ WrapperRectangle {
 		PwObjectTracker {
 			objects: [Pipewire.defaultAudioSink, Pipewire.defaultAudioSource]
 		}
+
 		StatusAreaIcon {
 			sourcePath: Brightness.screen > 50 ? "resources/brightnessHigh.svg" : "resources/brightnessLow.svg"
 			hoverText: `${Brightness.screen}%`
 		}
+
 		StatusAreaIcon {
 			sourcePath: `${Battery.icon}`
 			hoverText: `${Battery.percentage}% - ${Battery.charging ? "Charging" : "Not Charging"}`
